@@ -1,0 +1,160 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\setlength\parindent{0pt}
+
+\title{Introduction to Stone Duality - Proofs}
+\author{Sri Pranav Kunda}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+% Section 1 - Structure Preserving Maps and Duality
+
+\section{Structure Preserving Maps and Duality}
+
+\begin{definition}
+Let $f : X \to Y$. Then $f^* : 2^Y \to 2^X$ defined by, for $b \in 2^Y$,
+
+$$f^*(b) = \{x \in X: f(x) \in b\}$$
+
+is called the inverse image function of $f$.
+\end{definition}
+
+\textbf{Remark: } The inverse image function is also called the preimage and can be denoted by $f^{-1}(x)$ on other writings. 
+
+\begin{proposition}
+Given a function $f : X \to Y$, the inverse image function $f^*$ preserves unions, intersections, and complements. 
+\end{proposition}
+
+\begin{proof}
+Let $S \subseteq 2^Y$ and suppose $x \in \bigcup_{s \in S} f^*(s)$. This means $x$ is in at least one of $f^*(s)$ so that, by definition, $f(x)$ is in at least one $s$ and $x \in f^*(\bigcup_{s \in S} s)$. \\
+
+Since the converse follows similarly, $f^*(\bigcup_{s \in S} s) = \bigcup_{s \in S} f^*(s)$. It is easy to see that $f^*$ preserves intersections in the same way. \\
+
+Finally, $x \in f^*(\neg a) \Longleftrightarrow f(x) \not\in a \Longleftrightarrow x \not\in f^*(a) \Longleftrightarrow x \in \neg f^*(a)$, completing the proof.
+\end{proof}
+
+\begin{definition}[Adjoints]
+Let $R : 2^Y \to 2^X$. Then $L : 2^X \to 2^Y$ is left-adjoint to $R$ (and $R$ is right-adjoint to $L$) if for all $a \in 2^X$ and $b \in 2^Y$,
+
+\begin{equation} \label{eq:ajdoints}
+L(a) \subseteq b \Longleftrightarrow a \subseteq R(b).
+\end{equation}
+\end{definition}
+
+\textbf{Remark:} The phrases $L$ is a left adjoint and $L$ has a right adjoint are equivalent. 
+
+\begin{lemma}
+If $L$ is left-adjoint to $R$, $a \subseteq R(L(a))$ and $L(R(b)) \subseteq b$.
+\end{lemma}
+
+\begin{proof}
+Since $L(a) \subseteq L(a)$, $a \subseteq R(L(a))$ by (\ref{eq:ajdoints}). Similar reasoning shows that $L(R(b)) \subseteq b$.
+\end{proof}
+
+\begin{definition}[Monotone Function]
+A function $F : 2^X \to 2^Y$ is monotone if for any $a, a' \in 2^X$, $a \subseteq a' \Rightarrow F(a) \subseteq F(a')$.
+\end{definition}
+
+\begin{lemma}
+If $F : 2^X \to 2^Y$ has a left or right adjoint, $F$ is monotone.
+\end{lemma}
+
+\begin{proof}
+For concreteness we assume that $F$ has a right adjoint $R$. We show that both $F$ and $R$ are monotone. Define $a, a'$ as in Definition 3.\\
+
+By Lemma 1, $a \subseteq a' \subseteq R(F(a'))$. From (\ref{eq:ajdoints}) we see that if $a \subseteq R(F(a'))$, $F(a) \subseteq F(a')$. A similar argument invoking the latter portion of Lemma 1 shows that $R$ is monotone.
+\end{proof}
+
+\begin{lemma}
+Let $L : 2^X \to 2^Y$ and $R : 2^Y \to 2^X$. If $L$ and $R$ are monotone and $a \subseteq R(L(a))$ and $L(R(b)) \subseteq b$ for all $a \in 2^X$ and $b \in 2^Y$, then $L$ is left-adjoint to $R$.
+\end{lemma}
+
+\begin{proof}
+Suppose $L(a) \subseteq b$. Since $L$ is monotone, $a \subseteq R(L(a)) \subseteq R(b)$. Conversely, suppose $a \subseteq R(b)$. Because $R$ is monotone, $L(a) \subseteq L(R(b)) \subseteq b$. Thus $L$ is left-adjoint to $R$ (and $R$ is right-adjoint to $L$).
+\end{proof}
+
+\begin{lemma}
+Left and right adjoints are unique.
+\end{lemma}
+
+\begin{proof}
+We omit the proof for right-adjoints because it is similar to the proof for left-adjoints. Let $F : 2^X \to 2^Y$ and suppose $L, L'$ are left-adjoint to $F$. Then $a \subseteq R(L'(a))$ by Lemma 1. It follows from (\ref{eq:ajdoints}) that $L(a) \subseteq L'(a)$. Likewise, $a \subseteq R(L(a)) \Rightarrow L'(a) \subseteq L(a)$. Thus $L = L'$.
+\end{proof}
+
+\begin{proposition}
+Any function $g : 2^Y \to 2^X$ which preserves intersections and unions has a left adjoint $g_\exists : 2^X \to 2^Y$ and a right adjoint $g_\forall : 2^X \to 2^Y$. Moreover, $g_\exists$ and $g_\forall$ preserve unions and intersections respectively.
+\end{proposition}
+
+\begin{proof}
+
+We prove more generally that (i) $g$ has a left adjoint $g_\exists$ if and only if $g$ preserves intersections and that (ii) $g$ has a right adjoint $g_\forall$ if and only if $g$ preserves unions. The proof of (ii) is excluded for brevity since it is similar to (i). \\
+
+Define $g_\exists(a) = \bigcap \{y : a \subseteq g(y)\}$ and suppose $g$ preserves intersections. Let $a \subseteq a'$. Then $g(a \cap a') = g(a) = g(a) \cap g(a') \Rightarrow g(a) \subseteq g(a')$. Thus $g$ is monotone. Hence, $g_\exists(a) \subseteq b \Rightarrow g(b) \supseteq g(g_\exists(a)) \supseteq a$ since $g$ preserves intersections and $a \subseteq g(b) \Rightarrow g_\exists(a) \subseteq b$. It is easy to see that $g_\exists$ preserves unions from the definition, completing the proof. \\
+
+It is useful to note that if $g$ preserves both unions and intersections, then we may write equivalently that $g_\exists(a) = \{y \in Y \mid \exists x \in g(\{y\}) : x \in a \}$. 
+\end{proof}
+
+\begin{definition}[Atom]
+$a \subseteq X$ is an atom if for all $S \subseteq 2^X$, $a \subseteq \bigcup S$ implies that there exists an $a' \in S$ such that $a \subseteq a'$.
+\end{definition}
+
+\begin{proposition}
+$a \in 2^X$ is an atom if and only if there exists $x \in X$ s.t. $a = \{x\}$.
+\end{proposition}
+
+\begin{proof}
+Suppose there exists $x \in X$ s.t. $a = \{x\}$. Then for any $S \subseteq 2^X$, we have that if $a \subseteq \bigcup S$, there exists some $a' \in S$ s.t. $x \in a'$. Then $a \subseteq a'$ since $a$ is a singleton containing $x$. \\ 
+
+For the converse, suppose $a$ is an atom. First, observe that $a$ is nonempty, otherwise we may choose $S = \emptyset$ so that there exists no $a' \in S$ s.t. $a \subseteq a'$ although $a \subseteq \bigcup S$. \\
+
+For a contradiction, suppose $|a| > 1$. Choosing $S = \{\{x\} : x \in a\}$, we see that $a \subseteq \bigcup S$. However, $a$ is not contained in any $a' \in S$. Thus $|a| = 1$ and the proof is complete.
+\end{proof}
+
+\begin{lemma}Let $g : 2^Y \to 2^X$ preserve unions and intersections. Then the left adjoint of $g$ (which exists and is unique by Proposition 2 and Lemma 4) maps atoms to atoms. 
+\end{lemma}
+
+\begin{proof}
+Let $a \in 2^X$ be an atom, let $S \subseteq 2^Y$ s.t. $g_\exists(a) \subseteq \bigcup S$, and let $T = \{g(s) : s \in S\}$. Then $a \subseteq g(\bigcup S) = \bigcup T$ by the definition of the adjoint. Since $a$ is an atom and $T \subseteq 2^X$, there exists $a' \in T$ s.t. $a \subseteq a'$. Because $a' = g(s)$ for some $s \in S$, we have that $g_\exists(a) \subseteq g_\exists(g(s)) \subseteq s$ by Lemmas 1 and 2.
+\end{proof}
+
+\begin{proposition}
+Every function $g : 2^Y \to 2^X$ that preserves unions and intersections is the inverse image function for a unique $g_* : X \to Y$. 
+\end{proposition}
+
+\begin{proof}
+By Lemma 5, $g$ has a unique left adjoint $g_\exists$ which maps atoms to atoms. Define $g_*(x) = g_\exists(\{x\})$. We show that $(g_*)^*$ is right adjoint to $g_\exists$ so that $g$ is the inverse image function of $g_* : X \to Y$ by the uniqueness of adjoints. \\
+
+It has already been shown that both $g_\exists$ and $(g_*)^*$ are monotone and preserve unions. Hence, $(g_*)^*(g_\exists(a)) = \bigcup_{x \in a} (g_*)^*(g_\exists(\{x\})) \supseteq a$ and $g_\exists((g_*)^*(b)) = \bigcup_{y \in b} g_\exists((g_*)^*(\{y\})) \subseteq b$. \\
+
+We retain the notation $g_*$ to denote the function for which $g$ is the inverse image function. 
+\end{proof}
+
+\begin{theorem}
+There is a bijection between functions $2^Y \to 2^X$ which preserve unions and intersections and functions $X \to Y$.
+\end{theorem}
+
+\begin{proof}
+By Proposition 4, there exists a unique $g_* : X \to Y$ for every $g : 2^Y \to 2^X$. Similarly, every $f : X \to Y$ has a unique inverse image function $f^*$ by definition. Thus we have a bijection.
+\end{proof}
+
+% Section 2 - Algebraic Duality
+
+\section{Algebraic Duality}
+
+\begin{definition}[Lattice]
+
+\end{definition}
+
+\begin{definition}[Bounded Lattice]
+
+\end{definition}
+
+\end{document} 
