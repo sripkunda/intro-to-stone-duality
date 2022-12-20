@@ -1,19 +1,47 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
+\usepackage[margin=1.5in]{geometry}
+\usepackage {xcolor}
 \usepackage{amsthm}
-\newtheorem{theorem}{Theorem}
-\newtheorem{proposition}{Proposition}
-\newtheorem{lemma}{Lemma}
-\newtheorem{definition}{Definition}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{theorem}[proposition]{Theorem}
+\newtheorem{lemma}[proposition]{Lemma}
+\newtheorem{definition}[proposition]{Definition}
 \setlength\parindent{0pt}
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
+    pdftitle={Introduction to Stone Duality},
+    pdfpagemode=FullScreen,
+}
 
-\title{Introduction to Stone Duality - Proofs}
+\newcommand{\meet}{\wedge}
+\newcommand{\join}{\vee}
+\newcommand{\bigmeet}{\bigwedge}
+\newcommand{\bigjoin}{\bigvee}
+% Function restriction, from https://tex.stackexchange.com/questions/22252/how-to-typeset-function-restrictions
+\newcommand\restr[2]{{% we make the whole thing an ordinary symbol
+  \left.\kern-\nulldelimiterspace % automatically resize the bar with \right
+  #1 % the function
+  \vphantom{\big|} % pretend it's a little taller at normal size
+  \right|_{#2} % this is the delimiter
+}}
+
+\title{Introduction to Stone Duality}
 \author{Sri Pranav Kunda}
 \date{}
 
 \begin{document}
 
 \maketitle
+
+These notes come from \href{https://hackmd.io/@alexhkurz/S1W8SC0Tc}{"A Short Introduction to Stone Duality"} by Dr. Alexander Kurz. Proofs of propositions are provided, and remarks on the content are added for additional background. 
 
 % Section 1 - Structure Preserving Maps and Duality
 
@@ -24,12 +52,12 @@ Let $f : X \to Y$. Then $f^* : 2^Y \to 2^X$ defined by, for $b \in 2^Y$,
 
 $$f^*(b) = \{x \in X: f(x) \in b\}$$
 
-is called the inverse image function of $f$.
+is called the \textbf{inverse image function} of $f$.
 \end{definition}
 
 \textbf{Remark: } The inverse image function is also called the preimage and can be denoted by $f^{-1}(x)$ on other writings. 
 
-\begin{proposition}
+\begin{proposition}\label{thm:inv-image-preserves-structure}
 Given a function $f : X \to Y$, the inverse image function $f^*$ preserves unions, intersections, and complements. 
 \end{proposition}
 
@@ -42,7 +70,7 @@ Finally, $x \in f^*(\neg a) \Longleftrightarrow f(x) \not\in a \Longleftrightarr
 \end{proof}
 
 \begin{definition}[Adjoints]
-Let $R : 2^Y \to 2^X$. Then $L : 2^X \to 2^Y$ is left-adjoint to $R$ (and $R$ is right-adjoint to $L$) if for all $a \in 2^X$ and $b \in 2^Y$,
+Let $R : 2^Y \to 2^X$. Then $L : 2^X \to 2^Y$ is \textbf{left-adjoint} to $R$ (and $R$ is \textbf{right-adjoint} to $L$) if for all $a \in 2^X$ and $b \in 2^Y$,
 
 \begin{equation} \label{eq:ajdoints}
 L(a) \subseteq b \Longleftrightarrow a \subseteq R(b).
@@ -51,7 +79,7 @@ L(a) \subseteq b \Longleftrightarrow a \subseteq R(b).
 
 \textbf{Remark:} The phrases $L$ is a left adjoint and $L$ has a right adjoint are equivalent. 
 
-\begin{lemma}
+\begin{lemma}\label{lem:inv-img-adjoint-lem-1}
 If $L$ is left-adjoint to $R$, $a \subseteq R(L(a))$ and $L(R(b)) \subseteq b$.
 \end{lemma}
 
@@ -60,17 +88,17 @@ Since $L(a) \subseteq L(a)$, $a \subseteq R(L(a))$ by (\ref{eq:ajdoints}). Simil
 \end{proof}
 
 \begin{definition}[Monotone Function]
-A function $F : 2^X \to 2^Y$ is monotone if for any $a, a' \in 2^X$, $a \subseteq a' \Rightarrow F(a) \subseteq F(a')$.
+A function $F : 2^X \to 2^Y$ is \textbf{monotone} if for any $a, a' \in 2^X$, $a \subseteq a' \Rightarrow F(a) \subseteq F(a')$.
 \end{definition}
 
-\begin{lemma}
+\begin{lemma}\label{lem:inv-image-adjoints-monotone}
 If $F : 2^X \to 2^Y$ has a left or right adjoint, $F$ is monotone.
 \end{lemma}
 
 \begin{proof}
 For concreteness we assume that $F$ has a right adjoint $R$. We show that both $F$ and $R$ are monotone. Define $a, a'$ as in Definition 3.\\
 
-By Lemma 1, $a \subseteq a' \subseteq R(F(a'))$. From (\ref{eq:ajdoints}) we see that if $a \subseteq R(F(a'))$, $F(a) \subseteq F(a')$. A similar argument invoking the latter portion of Lemma 1 shows that $R$ is monotone.
+By \cref{lem:inv-img-adjoint-lem-1}, $a \subseteq a' \subseteq R(F(a'))$. From (\ref{eq:ajdoints}) we see that if $a \subseteq R(F(a'))$, $F(a) \subseteq F(a')$. A similar argument invoking the latter portion of \cref{lem:inv-img-adjoint-lem-1} shows that $R$ is monotone.
 \end{proof}
 
 \begin{lemma}
@@ -81,15 +109,15 @@ Let $L : 2^X \to 2^Y$ and $R : 2^Y \to 2^X$. If $L$ and $R$ are monotone and $a 
 Suppose $L(a) \subseteq b$. Since $L$ is monotone, $a \subseteq R(L(a)) \subseteq R(b)$. Conversely, suppose $a \subseteq R(b)$. Because $R$ is monotone, $L(a) \subseteq L(R(b)) \subseteq b$. Thus $L$ is left-adjoint to $R$ (and $R$ is right-adjoint to $L$).
 \end{proof}
 
-\begin{lemma}
+\begin{lemma}\label{lem:inv-img-adjoint-unique}
 Left and right adjoints are unique.
 \end{lemma}
 
 \begin{proof}
-We omit the proof for right-adjoints because it is similar to the proof for left-adjoints. Let $F : 2^X \to 2^Y$ and suppose $L, L'$ are left-adjoint to $F$. Then $a \subseteq R(L'(a))$ by Lemma 1. It follows from (\ref{eq:ajdoints}) that $L(a) \subseteq L'(a)$. Likewise, $a \subseteq R(L(a)) \Rightarrow L'(a) \subseteq L(a)$. Thus $L = L'$.
+We omit the proof for right adjoints because it is similar to the proof for left adjoints. Let $F : 2^X \to 2^Y$ and suppose $L, L'$ are left-adjoint to $F$. Then $a \subseteq R(L'(a))$ by \cref{lem:inv-img-adjoint-lem-1}. It follows from (\ref{eq:ajdoints}) that $L(a) \subseteq L'(a)$. Likewise, $a \subseteq R(L(a)) \Rightarrow L'(a) \subseteq L(a)$. Thus $L = L'$.
 \end{proof}
 
-\begin{proposition}
+\begin{proposition}\label{prop:inv-image-has-adjoints}
 Any function $g : 2^Y \to 2^X$ which preserves intersections and unions has a left adjoint $g_\exists : 2^X \to 2^Y$ and a right adjoint $g_\forall : 2^X \to 2^Y$. Moreover, $g_\exists$ and $g_\forall$ preserve unions and intersections respectively.
 \end{proposition}
 
@@ -103,10 +131,10 @@ It is useful to note that if $g$ preserves both unions and intersections, then w
 \end{proof}
 
 \begin{definition}[Atom]
-$a \subseteq X$ is an atom if for all $S \subseteq 2^X$, $a \subseteq \bigcup S$ implies that there exists an $a' \in S$ such that $a \subseteq a'$.
+$a \subseteq X$ is an \textbf{atom} if for all $S \subseteq 2^X$, $a \subseteq \bigcup S$ implies that there exists an $a' \in S$ such that $a \subseteq a'$.
 \end{definition}
 
-\begin{proposition}
+\begin{proposition}\label{prop:powset-atoms-are-singletons}
 $a \in 2^X$ is an atom if and only if there exists $x \in X$ s.t. $a = \{x\}$.
 \end{proposition}
 
@@ -118,43 +146,287 @@ For the converse, suppose $a$ is an atom. First, observe that $a$ is nonempty, o
 For a contradiction, suppose $|a| > 1$. Choosing $S = \{\{x\} : x \in a\}$, we see that $a \subseteq \bigcup S$. However, $a$ is not contained in any $a' \in S$. Thus $|a| = 1$ and the proof is complete.
 \end{proof}
 
-\begin{lemma}Let $g : 2^Y \to 2^X$ preserve unions and intersections. Then the left adjoint of $g$ (which exists and is unique by Proposition 2 and Lemma 4) maps atoms to atoms. 
+\begin{lemma}\label{lem:left-adjoint-maps-atoms-to-atoms}
+Let $g : 2^Y \to 2^X$ preserve unions and intersections. Then the left adjoint of $g$ (which exists and is unique by \cref{prop:inv-image-has-adjoints} and \cref{lem:inv-img-adjoint-unique}) maps atoms to atoms. 
 \end{lemma}
 
 \begin{proof}
-Let $a \in 2^X$ be an atom, let $S \subseteq 2^Y$ s.t. $g_\exists(a) \subseteq \bigcup S$, and let $T = \{g(s) : s \in S\}$. Then $a \subseteq g(\bigcup S) = \bigcup T$ by the definition of the adjoint. Since $a$ is an atom and $T \subseteq 2^X$, there exists $a' \in T$ s.t. $a \subseteq a'$. Because $a' = g(s)$ for some $s \in S$, we have that $g_\exists(a) \subseteq g_\exists(g(s)) \subseteq s$ by Lemmas 1 and 2.
+Let $a \in 2^X$ be an atom, let $S \subseteq 2^Y$ s.t. $g_\exists(a) \subseteq \bigcup S$, and let $T = \{g(s) : s \in S\}$. Then $a \subseteq g(\bigcup S) = \bigcup T$ by the definition of the adjoint. Since $a$ is an atom and $T \subseteq 2^X$, there exists $a' \in T$ s.t. $a \subseteq a'$. Because $a' = g(s)$ for some $s \in S$, we have that $g_\exists(a) \subseteq g_\exists(g(s)) \subseteq s$ by \cref{lem:inv-img-adjoint-lem-1,lem:inv-image-adjoints-monotone}
 \end{proof}
 
-\begin{proposition}
+\begin{proposition} \label{prop:powset-morphism-is-inv-image}
 Every function $g : 2^Y \to 2^X$ that preserves unions and intersections is the inverse image function for a unique $g_* : X \to Y$. 
 \end{proposition}
 
 \begin{proof}
-By Lemma 5, $g$ has a unique left adjoint $g_\exists$ which maps atoms to atoms. Define $g_*(x) = g_\exists(\{x\})$. We show that $(g_*)^*$ is right adjoint to $g_\exists$ so that $g$ is the inverse image function of $g_* : X \to Y$ by the uniqueness of adjoints. \\
+By \cref{lem:left-adjoint-maps-atoms-to-atoms}, $g$ has a unique left adjoint $g_\exists$ which maps atoms to atoms. Define $g_*(x) = g_\exists(\{x\})$. We show that $(g_*)^*$ is right adjoint to $g_\exists$ so that $g$ is the inverse image function of $g_* : X \to Y$ by the uniqueness of adjoints. \\
 
 It has already been shown that both $g_\exists$ and $(g_*)^*$ are monotone and preserve unions. Hence, $(g_*)^*(g_\exists(a)) = \bigcup_{x \in a} (g_*)^*(g_\exists(\{x\})) \supseteq a$ and $g_\exists((g_*)^*(b)) = \bigcup_{y \in b} g_\exists((g_*)^*(\{y\})) \subseteq b$. \\
 
 We retain the notation $g_*$ to denote the function for which $g$ is the inverse image function. 
 \end{proof}
 
-\begin{theorem}
+\begin{theorem} \label{thm:bijection-set-morphisms-to-powset-morphisms}
 There is a bijection between functions $2^Y \to 2^X$ which preserve unions and intersections and functions $X \to Y$.
 \end{theorem}
 
 \begin{proof}
-By Proposition 4, there exists a unique $g_* : X \to Y$ for every $g : 2^Y \to 2^X$. Similarly, every $f : X \to Y$ has a unique inverse image function $f^*$ by definition. Thus we have a bijection.
+By \cref{prop:powset-morphism-is-inv-image}, there exists a unique $g_* : X \to Y$ for every union/intersection preserving $g : 2^Y \to 2^X$ so that $(g_*)^* = g$. Similarly, every $f : X \to Y$ has a unique inverse image function $f^*$ by definition. Hence we have a bijection.
 \end{proof}
+
+\pagebreak
 
 % Section 2 - Algebraic Duality
 
 \section{Algebraic Duality}
 
+\subsection{Algebraic Preliminaries}
+
+There are two equivalent definitions of a lattice, one which uses partially ordered sets and another which defines a lattice as an algebraic structure. Only the latter is below, but the former can be found on \href{https://en.wikipedia.org/wiki/Lattice_(order)}{the Wikipedia page}.
+
 \begin{definition}[Lattice]
 
+A \textbf{lattice} is a structure $(A, \meet, \join)$, where $A$ is a set and $\meet$ and $\join$ are binary, commutative, and associative operations on $A$ which satisfy the following (called absorption laws) for all $x, y \in A$:
+
+\begin{enumerate}
+    \item[L1.]{$x \join (x \meet y) = x$}
+    \item[L2.]{$x \meet (x \join y) = x$.}
+\end{enumerate}
+
+$\meet$ is read "meet" and $\join$ is read "join."
+
+\end{definition}
+
+\begin{lemma}[Idempotence]
+Let $(A, \meet, \join)$ be a lattice. For any $x \in A$, $$x \meet x = x \text{ and } x \join x = x.$$
+\end{lemma}
+
+\begin{proof}
+Choose $y = x \join x$ from Definition 5. Then $x \meet y = x$ by (L2), meaning $$x \join (x \meet y) = x \join x = x$$ by (L1). The argument for $\meet$ follows similarly.
+\end{proof}
+
+\begin{definition}[Partial Order on Lattices]
+We may define a partial order $\leq$ on a lattice $A$, which generalizes $\subseteq$ from the previous section. For $x, y \in A$, define 
+\begin{align*}
+    x \leq y \text{ if } x \meet y = x, & \text{ or } \\
+    x \leq y \text{ if } x \join y = y.
+\end{align*}
 \end{definition}
 
 \begin{definition}[Bounded Lattice]
-
+A lattice $A$ is \textbf{bounded} (or is a bounded lattice) if there exist $0, 1 \in A$ such that $$0 \leq x \leq 1 \text{ for all } x \in A.$$ When there are multiple bounded lattices involved, we avoid confusion by using $1_A$ and $0_A$ to denote the maximum and minimum elements of the lattice $A$.
 \end{definition}
 
-\end{document} 
+\begin{definition}[Complete Lattice]
+A lattice $A$ is \textbf{complete} (or is a complete lattice) if every $T \subseteq A$ has a supremum and infimum, respectively denoted $\sup T, \inf T \in A$ (see \href{https://en.wikipedia.org/wiki/Infimum_and_supremum}{infimum and supremum}).
+\end{definition}
+
+\begin{lemma}
+Every complete lattice $A$ is bounded. Note that the converse is not necessarily true.
+\end{lemma}
+
+\begin{proof}
+Since $A$ is complete, there exists $0_A \in A$ (resp. $1_A \in A$) such that for every lower bound (resp. upper bound) $y \in \emptyset \subseteq A,$ $1_A \geq y$ (resp. $0_A \leq y$). Since every $y \in A$ is vacuously a lower bound and an upper bound, the proof is complete.
+\end{proof}
+
+\begin{lemma}
+Every finite lattice $A$ is complete. As a corollary, we have shown that all finite lattices are bounded.
+\end{lemma}
+
+\begin{proof}
+The proof follows easily from the definition of a complete lattice. 
+\end{proof}
+
+\begin{lemma}
+Let $A$ be a lattice. For $x, y, z \in A$, the following identities are equivalent: 
+\begin{enumerate}
+    \item[D1.]{$x \meet (y \join z) = (x \meet y) \join (x \meet z)$}
+    \item[D2.]{$x \join (y \meet z) = (x \join y) \meet (x \join z)$}
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Assume (D1) holds. Then 
+\begin{align*}
+(x \join y) \meet (x \join z) &= ((x \join y) \meet x) \join ((x \join y) \meet z) 
+                           \\ &= x \join ((x \join y) \meet z)
+                           \\ &= (x \join (z \meet x)) \join (y \meet z)
+                           \\ &= x \join (y \meet z)
+\end{align*}
+by associativity/commutativity of $\join$ and $\meet$. The converse follows similarly.
+\end{proof}
+
+\begin{definition}[Distributive Lattice]
+A lattice $A$ is \textbf{distributive} if (D1) (or (D2), equivalently) holds for $x, y, z \in A$.
+\end{definition}
+
+\begin{definition}[Complemented Lattice]
+A lattice $A$ is \textbf{complemented} if for every $x \in A$, there exists some $x' \in A$ such that $x \meet x' = 0_A$ and $x \join x' = 1_A$. We call $x'$ a complement of $x$. 
+\end{definition}
+
+\begin{definition}[Finite Boolean Algebra]
+A \textbf{finite Boolean algebra} is a finite complemented distributive lattice.
+\end{definition}
+
+The following lemma allows us to speak of complements in finite Boolean algebras with reference to exactly one element. Hence, we denote the complement of $x$ by $\neg x$.
+
+\begin{lemma} \label{lem:finite-ba-complements-are-unique}
+Complements of elements in a finite Boolean algebra $C$ are unique. 
+\end{lemma}
+
+\begin{proof}
+Let $x, x', x'' \in C$, where $x'$ and $x''$ are complements of $x$. Then $x' = x' \join (x \meet x'') = (x' \join x) \meet (x' \join x'') = x' \join x''$. This means $x'' \leq x'$. Interchanging $x'$ and $x''$ shows that $x' \leq x''$, completing the proof. 
+\end{proof}
+
+\begin{lemma}[De Morgan's Laws] \label{lem:de-morgans-laws}
+Let $C$ be a finite Boolean algebra and let $x, y \in C$. Then $\neg (x \meet y) = \neg x \join \neg y$ and $\neg (x \join y) = \neg x \meet \neg y$.
+\end{lemma}
+
+\begin{proof}
+The proof follows easily from the fact that $C$ is distributive.
+\end{proof}
+
+\begin{proposition} \label{prop:powset-is-bool-alg}
+Let $X$ be a finite set. By setting the bottom (resp. top) element to be $\emptyset$ (resp. $X$) and meets (resp. joins) to be intersections (resp. unions), $2^X$ forms a finite Boolean algebra.
+\end{proposition}
+
+\begin{proof}
+The proof follows easily from the properties of elementary set operations. 
+\end{proof}
+
+\subsection{Properties of Lattice Morphisms}
+
+For the remainder of this section, $A$ and $B$ are assumed to be finite (hence bounded) lattices. 
+
+\begin{definition}[Lattice Morphism]
+$f : A \to B$ is a \textbf{lattice (homo)morphism} if for $x, y \in A$ if $$f(0_A) = 0_B$$ $$f(1_A) = 1_B$$ $$f(x \meet y) = f(x) \meet f(y)$$ $$f(x \join y) = f(x) \join f(y)$$ 
+\end{definition}
+
+\begin{lemma}
+Lattice morphisms of Boolean algebras preserve complements.
+\end{lemma}
+
+\begin{proof}
+The proof follows easily from the fact that lattice morphisms preserve top and bottom elements.
+\end{proof}
+
+\begin{definition}[Adjoints of Lattice Morphisms]
+Let $R : B \to A$. Then $L : A \to B$ is \textbf{left-adjoint} to $R$ (and $R$ is \textbf{right-adjoint} to $L$) if for all $a \in A$ and $b \in B$,
+
+\begin{equation*}
+L(a) \leq b \Longleftrightarrow a \leq R(b).
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Monotone Lattice Morphisms]
+A lattice morphism $f : A \to B$ is \textbf{monotone} if for $a, a' \in A$ such that $a \leq a'$ $f(a) \leq f(a')$.
+\end{definition}
+
+The following lemmas are also presented without proof since they are nearly identical to the proofs of \hyperref[lem:inv-img-adjoint-lem-1]{Lemmas 1.4-1.8}. The main difference is the use of the partial order $\leq$ instead of $\subseteq$.
+
+\begin{lemma}
+If $L$ is left-adjoint to $R$, $a \leq R(L(a))$ and $L(R(b)) \leq b$.
+\end{lemma}
+
+\begin{lemma}
+If $f : A \to B$ has a left or right adjoint, $f$ is monotone.
+\end{lemma}
+
+\begin{lemma}
+Let $L : A \to B$ and $R : B \to A$. If $L$ and $R$ are monotone and $a \leq R(L(a))$ and $L(R(b)) \leq b$ for all $a \in A$ and $b \in B$, then $L$ is left-adjoint to $R$.
+\end{lemma}
+
+\begin{lemma}
+Left and right adjoints (of lattice morphisms) are unique.
+\end{lemma}
+
+\begin{proposition}
+Recall that $A$ and $B$ are finite lattices. Then any lattice morphism $g : B \to A$ has a left adjoint $g_\exists : A \to B$ and a right adjoint $g_\forall : A \to B$. Moreover, $g_\exists$ and $g_\forall$ preserve joins and meets respectively.
+\end{proposition}
+
+\begin{proof}
+Like \cref{prop:inv-image-has-adjoints}, we prove more generally that (i) $g$ has a left adjoint $g_\exists$ if and only if $g$ preserves $\meet, 1_B$, and (ii) that $g$ has a right adjoint $g_\forall$ if and only if $g$ preserves $\join, 0_B$. The proof of (ii) is excluded for brevity since it is similar to (i). \\
+
+Suppose $g$ preserves meets. For any $a \in A$, let $S = \{b : a \leq g(b)\}$ and define $g_\exists(a) = \bigmeet_{s \in S}s$. Let $b \leq b'$ for $b, b' \in B$. Since $g(b \meet b') = g(b) \meet g(b') = g(b)$, $g(b) \leq g(b')$, meaning $g$ is monotone. Hence, $g_\exists(a) \leq b \Rightarrow g(b) \geq g(g_\exists(a)) \geq a$ since $g$ preserves meets. The fact that $a \leq g(b) \Rightarrow g_\exists(a) \leq b$ and that $g_\exists$ preserves unions is clear from the definition of $g_\exists$.
+\end{proof}
+
+\textbf{Remark:} This generalizes to infinite lattices if we assume that $A$ and $B$ are complete.
+
+\begin{definition}[Completely Join-Prime]
+We say that $x \in A \setminus \{0_A\}$ is \textbf{prime} (or \textbf{completely join-prime}) if for all $y, z \in A$, $x \leq y \join z$ implies that $x \leq z$ or $x \leq y.$ Let $\mathcal{J}_A$ denote the set of join-prime elements of $A$. 
+\end{definition}
+
+\textbf{Remark:} Similarly, we can say more generally that for a complete lattice $L,$ $x \in L \setminus \{0_L\}$ is completely join-prime if $x \leq \bigjoin_{t \in T} t$ for any $T \subseteq L$ implies that $x \leq t$ for some $t \in T.$
+
+
+\begin{lemma} \label{lem:left-adjoint-maps-primes-to-primes}
+The left adjoint $g_\exists : A \to B$ of a lattice morphism $g : B \to A$ maps prime elements of $A$ to prime elements of $B$.
+\end{lemma}
+
+\begin{proof}
+Let $a \in A$ be prime, let $b_1, b_2 \in B$ s.t.\ $g_\exists(a) \leq b_1 \join b_2$, and let $t_i = g(b_i)$. Then $a \leq g(b_1 \join b_2) = t_1 \join t_2$ by the definition of the adjoint. Since $a$ is prime and $t_1, t_2 \in B$, $a \leq t_k$ for some $k \in \{1, 2\}$. Because $t_k = g(b_k)$, we have that $g_\exists(a) \leq g_\exists(g(b_k)) \leq b_k$.
+\end{proof}
+
+\subsection{Finite Boolean Algebras and Power Sets}
+
+We now turn our attention to Boolean algebras to describe isomorphisms between lattice morphisms of Boolean algebras and maps of sets. Unless specified otherwise, $C, D$ and $X, Y$ will denote finite Boolean algebras and finite sets, respectively, for the remainder of this section. \\
+
+The following lemma shows how primes correspond to atoms (i.e.\ singletons) in the previous section.
+
+\begin{lemma} \label{lem:primes-are-atoms}
+$p \in C$ is prime if and only if $z \leq p$ implies $z = 0_C$ or $z = p$. Moreover, for every $x \in C \setminus \{0_C\}$, there exists a prime element $p \in C$ such that $p \leq x$. 
+\end{lemma}
+
+\begin{proof}
+Suppose $p$ is prime. If $y < p$, $p \leq \neg y$ since $p \leq y \meet \neg y$. Then $y = 0_C$ since $y < p \leq \neg y$ and $y = y \meet \neg y = 0_C$. \\
+
+For the converse, let $a, b \in C$ and suppose $p \leq a \join b$, $p \not\leq a$, and $p \not\leq b$. If $p > a$ or $p > b$, a contradiction is reached since $a = 0_C$ or $a = p$ (and similarly for $b$). Hence $p \join a \neq a$ and $p \join b \neq b$. Then $p \join a > a$ and $p \join b > b$. However, this means that $$p \join a \join p \join b = p \join a \join b > a \join b,$$ a contradiction. \\
+
+Now, for any $x \in C \setminus \{0_C\}$ choose some $y < x$. If $0_C$ is the only such $y$, $x$ is prime and we are done. Setting $x := y$ and repeating this process completes the proof.
+\end{proof} 
+
+\begin{proposition} \label{prop:repr-bool-alg-with-primes}
+For every $x \in C \setminus \{0_C\}$, there exists exactly one nonempty set $S_x \subseteq \mathcal{J}_C$ such that $x = \bigjoin_{s \in S_x} s$. That is, every element of a finite Boolean algebra can be uniquely represented as a finite join of its prime elements.
+\end{proposition}
+
+\begin{proof}
+Let $x \in C \setminus \{0_C\}$. Define $S_x = \{p \mid p \leq x : p \text{ is prime}\}$. By \cref{lem:primes-are-atoms}, $S_x$ defined in this way is nonempty. Let $y = \bigjoin_{s \in S_x} s$. If $x \meet \neg y = 0_C$, $x = y$ since complements are unique in finite Boolean algebras by \cref{lem:finite-ba-complements-are-unique}. Suppose $x \meet \neg y \neq 0_C$. Then there exists a prime element $p$ such that $p \leq x \meet \neg y \leq x$. However, this contradicts \cref{lem:de-morgans-laws}, since this means that $p \in S_x$ and $p \leq \neg y$. \\
+
+For uniqueness, suppose there existed another nonempty set of primes $S'_x$ such that $x = \bigjoin_{s \in S'_x} s$. Then $p \leq x$ for every $p \in S'_x$, meaning $S'_x \subseteq S_x$. Suppose $S'_x \neq S$. Then there exists some $p_0 \in S_x$ such that $p_0 \not\in S'_x$ and $\bigjoin_{s \in S'_x} s \join p_0 = \bigjoin_{s \in S'_x} s$. However, this means that $p_0 < s$ for some $s \in S'_x$, a contradiction. Hence $S_x = S'_x$.
+\end{proof}
+
+\begin{proposition}
+There exists a bijection $C \to 2^X$ for some set $X$. This also shows that the cardinality of every finite Boolean algebra is a power of two. 
+\end{proposition}
+
+\begin{proof}
+We may let $0_C$ correspond (bijectively) to $\emptyset \in 2^X$ regardless of the choice of $X$. By \cref{prop:repr-bool-alg-with-primes}, for every $x \in C \setminus \{0_C\}$ there exists a unique $S_x$ such that $x = \bigjoin_{s \in S_x} s$. Define $X = \mathcal{J}_C$. Then let each $x \in C \setminus \{0_C\}$ correspond to the set $S_x \in 2^X$ so that $\bigjoin_{s \in S_x} s = x$. Similarly, let each $T \in 2^X$ correspond to $\bigjoin_{t \in T} t$. Thus we have constructed a bijection and the proof is complete.
+\end{proof}
+
+\begin{lemma} \label{lem:inv-image-is-lattice-morphism}
+Recall that $2^X, 2^Y$ are finite Boolean algebras as defined in \cref{prop:powset-is-bool-alg}. Then the inverse image function of a map $X \to Y$ is a lattice morphism.
+\end{lemma}
+
+\begin{proof}
+The proof follows from \cref{thm:inv-image-preserves-structure}.
+\end{proof}
+
+\begin{theorem}
+There exists a bijection between:
+\begin{enumerate}
+    \item{finite Boolean algebras and finite sets}
+    \item{lattice morphisms $D \to C$ and maps $X \to Y$}
+\end{enumerate}
+(2) provides a result more general to \cref{thm:bijection-set-morphisms-to-powset-morphisms} by removing the assumption that the elements of $C, D$ are themselves sets.
+\end{theorem}
+
+\begin{proof}
+For (1), we let every Boolean algebra $C$ correspond with the finite set $\mathcal{J}_C$ and let every finite set $X$ correspond with the Boolean algebra formed by $2^X$. \\
+
+For (2), we let every lattice morphism $g : D \to C$ correspond to $\restr{g_\exists}{\mathcal{J}_C}$ (the restriction of the left adjoint to primes) and let every map $f: X \to Y$ correspond to the inverse image function $f^* : 2^Y \to 2^X$, which is a lattice morphism by \cref{lem:inv-image-is-lattice-morphism}. $(f^*)_\exists$ restricted to primes is a unique map $f : \{\{x\} : x \in X\} \to \{\{y\} : y \in Y\}$ and $\restr{g_\exists}{\mathcal{J}_C}$ is a unique map $g : \mathcal{J}_C \to \mathcal{J}_D$ by \cref{lem:left-adjoint-maps-primes-to-primes}. \\
+
+Since $\mathcal{J}_{2^X} = \{\{x\} : x \in X\}$ by \cref{lem:primes-are-atoms} and there exists an obvious bijection $X \to \{\{x\} : x \in X\}$, the proof is complete.
+\end{proof}
+
+
+\end{document}
