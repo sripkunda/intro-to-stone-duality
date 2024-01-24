@@ -21,6 +21,7 @@
 \Crefname{lemma}{Lemma}{Lemmas}
 \crefname{definition}{definition}{definitions}
 \Crefname{definition}{Definition}{Definitions}
+\numberwithin{equation}{section}
 
 \setlength\parindent{0pt}
 \usepackage{tikz}
@@ -38,7 +39,7 @@
 \newcommand{\join}{\vee}
 \newcommand{\bigmeet}{\bigwedge}
 \newcommand{\bigjoin}{\bigvee}
-\newcommand{\cat}[1]{{\mathsf{#1}}}
+\newcommand{\cat}[1]{{\mathbf{#1}}}
 \newcommand{\ob}{\mathrm{ob}}
 \newcommand{\dom}{\mathrm{dom}}
 \newcommand{\cod}{\mathrm{cod}}
@@ -369,7 +370,7 @@ Recall that $A$ and $B$ are finite lattices. Then any lattice morphism $g : B \t
 \begin{proof}
 Like \Cref{prop:inv-image-has-adjoints}, we prove more generally that (i) $g$ has a left adjoint $g_\exists$ if and only if $g$ preserves $\meet, 1_B$, and (ii) that $g$ has a right adjoint $g_\forall$ if and only if $g$ preserves $\join, 0_B$. The proof of (ii) is excluded for brevity since it is similar to (i). \\
 
-Suppose $g$ preserves meets. For any $a \in A$, let $S = \{b : a \leq g(b)\}$ and define $g_\exists(a) = \bigmeet_{s \in S}s$. Let $b \leq b'$ for $b, b' \in B$. Since $g(b \meet b') = g(b) \meet g(b') = g(b)$, $g(b) \leq g(b')$, meaning $g$ is monotone. Hence, $g_\exists(a) \leq b \Rightarrow g(b) \geq g(g_\exists(a)) \geq a$ since $g$ preserves meets. The fact that $a \leq g(b) \Rightarrow g_\exists(a) \leq b$ and that $g_\exists$ preserves unions is clear from the definition of $g_\exists$.
+Suppose $g$ preserves meets. For any $a \in A$, let $S = \{b : a \leq g(b)\}$ and define $g_\exists(a) = \bigmeet S$. Let $b \leq b'$ for $b, b' \in B$. Since $g(b \meet b') = g(b) \meet g(b') = g(b)$, $g(b) \leq g(b')$, meaning $g$ is monotone. Hence, $g_\exists(a) \leq b \Rightarrow g(b) \geq g(g_\exists(a)) \geq a$ since $g$ preserves meets. The fact that $a \leq g(b) \Rightarrow g_\exists(a) \leq b$ and that $g_\exists$ preserves joins is clear from the definition of $g_\exists$.
 \end{proof}
 
 \textbf{Remark:} This generalizes to infinite lattices if we assume that $A$ and $B$ are complete.
@@ -378,7 +379,7 @@ Suppose $g$ preserves meets. For any $a \in A$, let $S = \{b : a \leq g(b)\}$ an
 We say that $x \in A \setminus \{0_A\}$ is \textbf{prime} (or \textbf{completely join-prime}) if for all $y, z \in A$, $x \leq y \join z$ implies that $x \leq z$ or $x \leq y.$ Let $\mathcal{J}_A$ denote the set of join-prime elements of $A$. 
 \end{definition}
 
-\textbf{Remark:} Similarly, we can say more generally that for a complete lattice $L,$ $x \in L \setminus \{0_L\}$ is completely join-prime if $x \leq \bigjoin_{t \in T} t$ for any $T \subseteq L$ implies that $x \leq t$ for some $t \in T.$
+\textbf{Remark:} Similarly, we can say more generally that for a complete lattice $L,$ $x \in L \setminus \{0_L\}$ is completely join-prime if $x \leq \bigjoin T$ for any $T \subseteq L$ implies that $x \leq t$ for some $t \in T.$
 
 
 \begin{lemma} \label{lem:left-adjoint-maps-primes-to-primes}
@@ -404,17 +405,17 @@ Suppose $p$ is prime. If $y < p$, $p \leq \neg y$ since $p \leq y \meet \neg y$.
 
 For the converse, let $a, b \in C$ and suppose $p \leq a \join b$, $p \not\leq a$, and $p \not\leq b$. If $p > a$ or $p > b$, a contradiction is reached since $a = 0_C$ or $a = p$ (and similarly for $b$). Hence $p \join a \neq a$ and $p \join b \neq b$. Then $p \join a > a$ and $p \join b > b$. However, this means that $$p \join a \join p \join b = p \join a \join b > a \join b,$$ a contradiction. \\
 
-Now, for any $x \in C \setminus \{0_C\}$ choose some $y < x$. If $0_C$ is the only such $y$, $x$ is prime and we are done. Setting $x := y$ and repeating this process completes the proof.
+Now, for any $x \in C \setminus \{0_C\}$ choose some $y < x$. If $0_C$ is the only such $y$, $x$ is prime and we are done. Setting $x = y$ and repeating this process completes the proof.
 \end{proof}
 
 \begin{proposition} \label{prop:repr-bool-alg-with-primes}
-For every $x \in C \setminus \{0_C\}$, there exists exactly one nonempty set $S_x \subseteq \mathcal{J}_C$ such that $x = \bigjoin_{s \in S_x} s$. That is, every element of a finite Boolean algebra can be uniquely represented as a finite join of its prime elements.
+For every $x \in C \setminus \{0_C\}$, there exists exactly one nonempty set $S_x \subseteq \mathcal{J}_C$ such that $x = \bigjoin S_x$. That is, every element of a finite Boolean algebra can be uniquely represented as a finite join of its prime elements.
 \end{proposition}
 
 \begin{proof}
-Let $x \in C \setminus \{0_C\}$. Define $S_x = \{p \mid p \leq x : p \text{ is prime}\}$. By \Cref{lem:primes-are-atoms}, $S_x$ defined in this way is nonempty. Let $y = \bigjoin_{s \in S_x} s$. If $x \meet \neg y = 0_C$, $x = y$ since complements are unique in finite Boolean algebras by \Cref{lem:finite-ba-complements-are-unique}. Suppose $x \meet \neg y \neq 0_C$. Then there exists a prime element $p$ such that $p \leq x \meet \neg y \leq x$. However, this contradicts \Cref{lem:de-morgans-laws}, since this means that $p \in S_x$ and $p \leq \neg y$. \\
+Let $x \in C \setminus \{0_C\}$. Define $S_x = \{p \mid p \leq x : p \text{ is prime}\}$. By \Cref{lem:primes-are-atoms}, $S_x$ defined in this way is nonempty. Let $y = \bigjoin S_x$. If $x \meet \neg y = 0_C$, $x = y$ since complements are unique in finite Boolean algebras by \Cref{lem:finite-ba-complements-are-unique}. Suppose $x \meet \neg y \neq 0_C$. Then there exists a prime element $p$ such that $p \leq x \meet \neg y \leq x$. However, this contradicts \Cref{lem:de-morgans-laws}, since this means that $p \in S_x$ and $p \leq \neg y$. \\
 
-For uniqueness, suppose there existed another nonempty set of primes $S'_x$ such that $x = \bigjoin_{s \in S'_x} s$. Then $p \leq x$ for every $p \in S'_x$, meaning $S'_x \subseteq S_x$. Suppose $S'_x \neq S$. Then there exists some $p_0 \in S_x$ such that $p_0 \not\in S'_x$ and $\bigjoin_{s \in S'_x} s \join p_0 = \bigjoin_{s \in S'_x} s$. However, this means that $p_0 < s$ for some $s \in S'_x$, a contradiction. Hence $S_x = S'_x$.
+For uniqueness, suppose there existed another nonempty set of primes $S'_x$ such that $x = \bigjoin S'_x$. Then $p \leq x$ for every $p \in S'_x$, meaning $S'_x \subseteq S_x$. Suppose $S'_x \neq S$. Then there exists some $p_0 \in S_x$ such that $p_0 \not\in S'_x$ and $\bigjoin S'_x \join p_0 = \bigjoin S'_x$. However, this means that $p_0 < s$ for some $s \in S'_x$, a contradiction. Hence $S_x = S'_x$.
 \end{proof}
 
 \begin{proposition}
@@ -422,7 +423,7 @@ There exists a bijection $C \to 2^X$ for some set $X$. This also shows that the 
 \end{proposition}
 
 \begin{proof}
-We may let $0_C$ correspond (bijectively) to $\emptyset \in 2^X$ regardless of the choice of $X$. By \Cref{prop:repr-bool-alg-with-primes}, for every $x \in C \setminus \{0_C\}$ there exists a unique $S_x$ such that $x = \bigjoin_{s \in S_x} s$. Define $X = \mathcal{J}_C$. Then let each $x \in C \setminus \{0_C\}$ correspond to the set $S_x \in 2^X$ so that $\bigjoin_{s \in S_x} s = x$. Similarly, let each $T \in 2^X$ correspond to $\bigjoin_{t \in T} t$. Thus we have constructed a bijection and the proof is complete.
+We may let $0_C$ correspond (bijectively) to $\emptyset \in 2^X$ regardless of the choice of $X$. By \Cref{prop:repr-bool-alg-with-primes}, for every $x \in C \setminus \{0_C\}$ there exists a unique $S_x$ such that $x = \bigjoin S_x$. Define $X = \mathcal{J}_C$. Then let each $x \in C \setminus \{0_C\}$ correspond to the set $S_x \in 2^X$ so that $\bigjoin S_x = x$. Similarly, let each $T \in 2^X$ correspond to $\bigjoin T$. Thus we have constructed a bijection and the proof is complete.
 \end{proof}
 
 \begin{lemma} \label{lem:inv-image-is-lattice-morphism}
@@ -449,5 +450,296 @@ For (2), we let every lattice morphism $g : D \to C$ correspond to $\restr{g_\ex
 
 Since $\mathcal{J}_{2^X} = \{\{x\} : x \in X\}$ by \Cref{lem:primes-are-atoms} and there exists an obvious bijection $X \to \{\{x\} : x \in X\}$, the proof is complete.
 \end{proof}
+
+\pagebreak
+
+\section{Introducing Category Theory}
+
+To more easily discuss the relationships between the areas of mathematics we wish to relate, it is useful to introduce some ideas in Category Theory. 
+
+\subsection{Categories, Functors, and Natural Transformations}
+
+The following are definitions and propositions that are fundamental in describing additional categorical concepts.
+
+\begin{definition}[Category]
+A \textbf{category} $\cat{C}$ consists of:
+\begin{enumerate}
+    \item{A collection of objects $\ob(\cat{C})$}
+    \item{A collection of morphisms (or arrows), where an arrow $f$ consists of a source object $\dom(f)$ and a target object $\cod(f).$ The collection of morphisms from object $A$ to object $B$ is denoted $\hom_\cat{C}(A, B)$}
+    \item{An associative composition operation $\hom_\cat{C}(B, C) \times \hom_\cat{C}(A, B) \to \hom_\cat{C}(A, C)$ denoted $f \circ g$ or $fg$}
+    \item{An identity morphism $\id_A : A \to A$ for every object $A,$ $f : A \to B,$ and $g : B \to A$ such that $f \circ \id_A = f$ and $\id_A \circ g = g$}
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Functor]
+Let $\cat{C}, \cat{D}$ be categories and let $X, Y$ be objects in $\cat{C}.$ A \textbf{functor} $F$ is a type of homomorphism between categories, consisting of 
+
+\begin{enumerate}
+    \item{A map $\ob(\cat{C}) \to \ob(\cat{D})$}
+    \item{A map $\hom_\cat{C}(X, Y) \to \hom_\cat{D}(F(X), F(Y))$}
+\end{enumerate}
+
+which satisfy 
+
+\begin{enumerate}
+    \item{$F(\id_X) = \id_{F(X)}$}
+    \item{$F(f \circ g) = F(f) \circ F(g)$ for arrows $f, g$ in $\cat{C}.$}
+\end{enumerate}
+
+We may denote $F(X)$ by $FX.$
+\end{definition}
+
+\begin{definition}[Natural Transformation]
+Let $F, G : \cat{C} \to \cat{D}$ be functors. A \textbf{natural transformation} is a mapping $\eta : F \to G$ which assigns, for every object $X$ in $\cat{C},$ a morphism $\eta_X : FX \to GX$ such that for every $f : X \to Y,$ $$\eta_Y \circ Ff = Gf \circ \eta_X.$$ Alternatively, the following diagram commutes.
+
+$$
+\begin{tikzcd}
+	FX && GX \\
+	\\
+	FY && GY
+	\arrow["{\eta_X}", from=1-1, to=1-3]
+	\arrow["{Ff}"', from=1-1, to=3-1]
+	\arrow["{Gf}", from=1-3, to=3-3]
+	\arrow["{\eta_Y}"', from=3-1, to=3-3]
+\end{tikzcd}
+$$
+
+We may define the composition operation on natural transformations by $$(\eta\eta')_X = \eta_X\eta'_X.$$
+\end{definition}
+
+\begin{definition}[Epimorphism and  Monomorphism]
+A morphism $f : X \to Y$ is said to be an \textbf{epimorphism} if, for all $\alpha_1, \alpha_2 : Z \to X,$ $$\alpha_1f = \alpha_2f \Rightarrow \alpha_1 = \alpha_2.$$
+
+Similarly, $f$ is a \textbf{monomorphism} if $$f\alpha_1 = f\alpha_2 \Rightarrow \alpha_1 = \alpha_2.$$
+\end{definition}
+
+\begin{definition}[$\cat{Set}, \cat{BA}, \cat{Set}_\omega, \cat{BA}_\omega$]
+We define the category $\cat{Set}$ to be the category for which the objects are sets and the arrows are functions. Likewise, $\cat{BA}$ is defined such that the objects are Boolean algebras and the arrows are Boolean algebra morphisms. We define $\cat{Set}_\omega$ and $\cat{BA}_\omega$ similarly, considering only finite sets and finite Boolean algebras respectively.
+\end{definition}
+
+\begin{lemma}
+In $\cat{Set},$ $f : X \to Y$ is surjective if and only if it is an epimorphism, and injective if and only if it is a monomorphism.
+\end{lemma}
+
+\begin{proof}
+The proof is straightforward and follows quickly from the definitions of injective and surjective functions.
+\end{proof}
+
+\begin{definition}[Isomorphism]
+An \textbf{isomorphism} is a morphism $h : X \to Y$ for which there exists $h^{-1} : Y \to X$ which is a left and right inverse of $h.$ We call $h^{-1}$ the inverse of $h.$
+\end{definition}
+
+\begin{definition}[Functor Category]
+Let $\cat{C}, \cat{D}$ be categories. Then $[\cat{C}, \cat{D}]$ is called a \textbf{functor category}, where the objects are functors and the arrows are natural transformations. For functors $F, G : \cat{C} \to \cat{D},$ we define $$\Nat(F, G) = \hom_{[\cat{C}, \cat{D}]}(F, G).$$
+\end{definition}
+
+\begin{definition}[Natural Isomorphism]
+An isomorphism in the functor category is called a \textbf{natural isomorphism}.
+\end{definition}
+
+\begin{lemma} \label{lem:natural-isomorphism-alternate-definition}
+Let $F, G : \cat{C} \to \cat{D}$ be functors and $\eta : F \to G$ be natural. Then $\eta$ is a natural isomorphism if and only if $\eta_X : FX \to GX$ for every $X$ is an isomorphism in $\cat{D}.$
+\end{lemma}
+
+\begin{proof}
+The forward direction follows easily from the definition of a natural isomorphism (a natural transformation with a left and right inverse) and the composition of natural transformations. \\
+
+Define $\eta^{-1} : G \to F$ by $\eta^{-1}_X = (\eta_X)^{-1}.$ Since $\eta$ is natural, $Gf \circ \eta_X = \eta_Y \circ Ff$ for $f : X \to Y$ in $\cat{C}$ and hence $$Ff \circ \eta^{-1}_X = \eta^{-1}_Y \circ (\eta_Y \circ Ff) \circ \eta^{-1}_X = \eta^{-1}_Y \circ Gf.$$ Thus, $\eta^{-1}$ is natural and the proof is complete.
+\end{proof}
+
+\begin{definition}[Small and Locally Small Categories]
+A category $\cat{C}$ is said to be \textbf{small} if $\ob(\cat{C})$ and $\hom(A, B)$ are both sets (and not proper classes) for all objects $A, B$. A category is said to be \textbf{locally small} if it has a class of objects and $\hom(A, B)$ is a set for all objects $A, B.$ 
+\end{definition}
+
+\begin{lemma}
+The categories $\cat{Set}, \cat{BA}, \cat{Set}_\omega,$ and $\cat{BA}_\omega$ are locally small. 
+\end{lemma}
+
+\begin{proof}
+The proof follows from the fact that a function $X \to Y$ can be seen as a subset of $2^{X \times Y}.$
+\end{proof}
+
+\begin{definition}[Hom Functor]
+Let $\cat{C}$ be a locally small category. Then for each object $A$ we may define the \textbf{hom functor} $h_A : \cat{C} \to \cat{Set}$ by $$h_A(B) = \hom(A, B) \textit{ for each object } B$$ $$h_A(f) = f \circ - \textit{ for each arrow } f : B \to C$$ where $f \circ - : h_A(B) \to h_A(C)$ is the function mapping an arrow $g : A \to B$ to $f \circ g : A \to C.$
+\end{definition}
+
+% TODO Prove one of the exercises with and without Yoneda Lemma. 
+
+\begin{lemma}[Yoneda Lemma]
+Let $\cat{C}$ be a locally small category and let $F : \cat{C} \to \cat{Set}.$ For every object $A$ there exists a bijection $\varphi : \Nat(h_A, F) \to FA.$
+\end{lemma}
+
+\begin{proof}
+Define $\varphi(\eta) = \eta_A(\id_A).$ We first show that $\varphi$ is injective. Let $\eta, \eta' : h_A \to F$ be natural and suppose $\eta \neq \eta'.$ Since $\eta$ is natural, the following diagram commutes:
+
+$$
+\begin{tikzcd}
+	A && {\hom(A, A)} && FA \\
+	\\
+	B && {\hom(A, B)} && FB
+	\arrow["f", from=1-1, to=3-1]
+	\arrow["{h_Af}"', from=1-3, to=3-3]
+	\arrow["{\eta_A}", from=1-3, to=1-5]
+	\arrow["{\eta_B}"', from=3-3, to=3-5]
+	\arrow["Ff", from=1-5, to=3-5]
+\end{tikzcd}
+$$
+Hence, we may conclude that $$\eta_B(f) = (Ff \circ \eta_A)(\id_A)$$ since it follows from the diagram that $$(Ff \circ \eta_A)(\id_A) = (\eta_Bh_A)(\id_A)$$ and $h_A(\id_A) = f \circ \id_A = f$ by the definition of the hom functor. Because $\eta \neq \eta',$ there exists an $X$ such that $\eta_X \neq \eta'_X.$ However, since $\eta_X(f) = (Ff \circ \eta_A)(\id_A),$ $$\eta_A(\id_A) = \varphi(\eta) \neq \varphi(\eta') = \eta'_A(\id_A).$$ We now complete the proof by showing that $\varphi$ is surjective. In particular, we show that for every $a \in FA,$ there exists $\eta$ such that $\varphi(\eta) = a.$ Fix $a$ and define $\eta_B(f) = (Ff)a$ for every object $B$ and $a \in FA.$ Since $F$ is a functor, $$(Ff \circ \eta_B)(g) = (Ff \circ  Fg)a = F(f \circ g)(a) = \eta_C(fg) = (\eta_C \circ h_Af)(g),$$ so that $\eta$ defined in this way is natural and $\varphi(\eta) = \eta_A(\id_A) = \id_{FA}(a) = a.$
+\end{proof}
+
+\subsection{Categorical Equivalence and Duality}
+
+We can now discuss "duality" and reformulate \Cref{thm:ba-set-bijection} as our "finite duality theorem."
+
+\begin{definition}[Equivalence of Categories]
+Categories $\cat{C}$ and $\cat{D}$ are said to be \textbf{equivalent} if there exist functors $F : \cat{C} \to \cat{D},$ $G : \cat{D} \to \cat{C},$ and natural isomorphisms $\Id_\cat{C} \cong GF,$ $\Id_\cat{D} \cong FG,$ 
+\end{definition}
+
+\begin{definition}[$\cat{C}^\op$]
+The \textbf{dual category} (or \textbf{opposite category}) $\cat{C}^\op$ of a category $\cat{C}$ is the category whose objects are the same as $\cat{C}$ such that we define $$\hom_{\cat{C}^\op}(A, B) = \hom_\cat{C}(B, A).$$ It is clear from this definition that $$(\cat{C}^\op)^\op = \cat{C}.$$
+\end{definition}
+
+\begin{definition}[Contravariant and Covariant Functors]
+A \textbf{contravariant functor} is a functor $\cat{C}^\op \to \cat{D}$ or, equivalently, a functor $\cat{C} \to \cat{D}^\op.$ An ordinary functor may be called a \textbf{covariant functor}. 
+\end{definition}
+
+\begin{lemma}
+If $\cat{C}$ and $\cat{D}$ are equivalent, $\cat{C}^\op$ and $\cat{D}^\op$ are equivalent.
+\end{lemma}
+
+\begin{proof}
+Since $\cat{C}$ and $\cat{D}$ are equivalent, there exist functors $F : \cat{C} \to \cat{D}$ and $G : \cat{D} \to \cat{C}$ such that $\Id_\cat{C} \cong GF$ and $Id_\cat{D} \cong FG$ are natural. The proof follows from defining the \textbf{opposite functor} $F^\op : \cat{C}^\op \to \cat{D}^\op$ by $F^\op A = FA$ and $F^\op f = Ff$ and considering functors $F^\op$ and $G^\op.$
+\end{proof}
+
+\begin{definition}[Categorical Duality]
+Categories $\cat{C}$ and $\cat{D}$ are \textbf{dually equivalent} if $\cat{C}^\op$ and $\cat{D}$ are equivalent. Alternatively, we may replace the covariant functors in the definition of categorical equivalence with contravariant functors.
+\end{definition}
+
+\begin{definition}[Boolean algebra morphism]
+A \textbf{Boolean algebra morphism} is an arrow in $\cat{BA}$ (or $\cat{BA}_\omega$) (i.e. a lattice morphism among Boolean algebras).
+\end{definition}
+
+\begin{theorem}
+\label{thm:fin-ba-set-duality-cat-theoretic}
+$\cat{Set}_\omega$ and $\cat{BA}_\omega$ are dually equivalent.
+\end{theorem}
+
+\begin{proof}
+We first define a functor $F : \cat{Set}_\omega \to \cat{BA}^\op_\omega$ by letting $FS$ be the Boolean algebra $2^S$ with joins as unions and meets as intersections, and $Ff$ for a map $S \to T$ be the inverse image function $2^T \to 2^S.$ Similarly, we define a functor $G : \cat{BA}^\op_\omega \to \cat{Set}_\omega$ by $GX = \mathcal{J}_X$ and $Gf$ for a Boolean algebra morphism $Y \to X$ as the map $\restr{g_\exists}{\mathcal{J}_X} : \mathcal{J}_X \to \mathcal{J}_Y$ (recall that $\mathcal{J}_X$ is the set of completely join-prime elements of Boolean algebra $X$). \\ 
+
+We now show that there exist natural isomorphisms $\Id_{\cat{Set}_\omega} \cong GF$ and $\Id_{\cat{BA}_\omega} \cong FG.$ Define $\alpha : \Id_{\cat{Set}_\omega} \to GF$ by $\alpha_S(s) = \{s\}$ for every finite set $S$ and $s \in S.$ Let $f : S \to T$ so that $$(GFf \circ \alpha_S)(s) = (\alpha_T \circ \Id_{\cat{Set}_\omega}f)(s) = \{f(s)\}$$ by the definition of the identity functor and $\restr{g_\exists}{\mathcal{J}_X}.$ By \Cref{lem:natural-isomorphism-alternate-definition}, $\alpha$ is a natural isomorphism since we may define $(\alpha_S)^{-1}(\{t\}) = t,$ which is a left and right inverse of $\alpha_S.$ \\ 
+
+The proof that $\Id_{\cat{BA}_\omega} \cong FG$ is natural follows similarly by considering $\beta : \Id_{\cat{BA}_\omega} \to FG$ defined by $\beta_X(x) = \{\{x\}\}.$
+\end{proof}
+
+\subsection{Adjoint Functors}
+
+Adjoints functors in category theory are immensely important and generalize the notion of "left and right adjoints" which were discussed in the previous sections. 
+
+% TODO change objects to C and D
+
+\begin{definition}[Adjunction]
+Suppose $\cat{C}$ and $\cat{D}$ are locally small categories. Let $L : \cat{C} \to \cat{D}$ and $R : \cat{D} \to \cat{C}$ be (covariant) functors and let $X$ and $Y$ be a fixed objects in $\cat{C}$ and $\cat{D}$ respectively. Define the pairs of functors $$\cat{C}(X, R-), \cat{D}(LX, -) : \cat{D} \to \cat{Set} \text{ and } \cat{C}(-, RY), \cat{D}(L-, Y) : \cat{C} \to \cat{Set}$$ in a similar fashion to the hom functor. Then $L$ is said to be the \textbf{left adjoint} of $R$ (and $R$ is said to be the \textbf{right adjoint} of $L$) if there is an isomorphism $$\hom_\cat{C}(X, RY) \cong \hom_\cat{D}(LX, Y)$$ natural in $X$ and $Y,$ which gives rise to natural isomorphisms $$\alpha: \cat{C}(X, R-) \to \cat{D}(LX, -) \text{ and } \beta : \cat{C}(-, RY) \to \cat{D}(L-, Y).$$ If such functors $L, R$ exist, we say that there is an $\textbf{adjunction}$ between categories $\cat{C}$ and $\cat{D}.$ In symbols, we write $L \dashv R$ to say that $L$ is left-adjoint to $R.$
+\end{definition}
+
+\textbf{Remark:} We can also define adjunctions without the assumption that $\cat{C}$ and $\cat{D}$ are locally small, but it is not needed for these notes and would require additional work to ensure that discussing hom functors is sensible. \\
+
+The following theorems provide very useful conditions for the existence of a right/left adjoint functor, as well as an intuition for constructing adjunctions. We prove both theorems simultaneously. 
+
+\begin{theorem}[Unit of an Adjunction]\label{thm:unit-of-adjunction}
+Let $R : \cat{D} \to \cat{C}$ be a functor. The following are equivalent for $X$ in $\cat{C}$ and $Y$ in $\cat{D}$:
+\begin{enumerate}
+    \item{The functor $R$ has a left adjoint $L : \cat{C} \to \cat{D}.$}
+    \item{There exist a map $L_0 : \ob(\cat C) \to \ob(\cat D)$ and $\eta_X : X \to RL_0X$ such that for every $f : X \to RY,$ there exists a unique $f^\sharp : L_0X \to Y$ which satisfies $Rf^\sharp \circ \eta_X = f.$} 
+\end{enumerate}
+We call $\eta$ a \textbf{unit} of the adjunction $L \dashv R.$ 
+\end{theorem}
+
+\begin{theorem}[Counit of an Adjunction]
+\label{thm:counit-of-adjunction}
+Let $L : \cat{C} \to \cat{D}$ be a functor. The following are equivalent for $X$ in $\cat{C}$ and $Y$ in $\cat{D}$:
+\begin{enumerate}
+    \item{The functor $L$ has a right adjoint $R : \cat{D} \to \cat{C}.$}
+    \item{There exists a map $R_0 : \ob(\cat D) \to \ob(\cat C)$ and $\epsilon_Y : LR_0Y \to Y$ such that for every $g : LX \to Y,$ there exists a unique $g^\flat : X \to R_0Y$ which satisfies $\epsilon_Y \circ Lg^\flat = g.$} 
+\end{enumerate}
+We call $\epsilon$ a \textbf{counit} of the adjunction $L \dashv R.$ 
+\end{theorem}
+
+\begin{proof}
+We will begin by proving \Cref{thm:unit-of-adjunction}. The "only if" direction of this proof is adapted from \href{https://hackmd.io/@alexhkurz/HyT3zuR8h}{Dr. Alexander Kurz's notes} on this theorem. Suppose (1) and fix $X,$ $Y,$ and $f : X \to RY.$ Since $L \dashv R,$ there exist natural isomorphisms $$\alpha: \cat{C}(X, R-) \to \cat{D}(LX, -) \text{ and } \beta : \cat{C}(-, RY) \to \cat{D}(L-, Y).$$ Define $L_0C = LC$ for every $C$ in $\cat C$ and $f^\sharp = \alpha_Y(f).$ Then let $g : L_0X \to Y$ and observe the following diagram:
+
+\[\begin{tikzcd}
+	{\hom_\textbf C(X, RL_0X)} && {\hom_\textbf D (L_0X, L_0X)} \\
+	\\
+	{\hom_\textbf C(X, RY)} && {\hom_\textbf D (L_0X, Y)}
+	\arrow["{\alpha_Y}"', from=3-1, to=3-3]
+	\arrow["{\alpha_{L_0X}}", from=1-1, to=1-3]
+	\arrow["{\textbf C(X, Rg)}"', from=1-1, to=3-1]
+	\arrow["{\textbf D(L_0X, g)}", from=1-3, to=3-3]
+\end{tikzcd}\]
+
+Then defining $\eta_X = \alpha_{L_0X}^{-1}(\id_{L_0X})$ yields $$(Rg \circ \eta_X)^\sharp = (\alpha_Y^{-1}(g))^\sharp = g$$ by observing that $\alpha$ is a natural isomorphism. Choosing $g = f^\sharp$ then gives the desired equality $$(Rf^\sharp \circ \eta_X)^\sharp = (f)^\sharp \implies Rf^\sharp \circ \eta_X = f$$ since $\alpha_Y$ is an isomorphism and hence $(-)^\sharp$ is injective. The uniqueness of $f^\sharp$ follows easily from observing that $(Rg \circ \eta_X)^\sharp = f^\sharp$ if $Rg \circ \eta_X = f.$ \\
+
+For the reverse direction, we first construct the functor $L$ and show that $\eta : \id_{\cat C} \to RL$ is natural. Let $X'$ in $\cat C,$ let $h : X \to X',$ and choose $Y = L_0X'.$ Then for $f = \eta_{X'} \circ h : X \to RY,$ there exists $f^\sharp : LX \to LX'$ such that the following diagram commutes:
+
+\[\begin{tikzcd}
+	X && RLX \\
+	\\
+	{X'} && {RLX'}
+	\arrow["{\eta_{X'}}"', from=3-1, to=3-3]
+	\arrow["{Rf^\sharp}", from=1-3, to=3-3]
+	\arrow["h"', from=1-1, to=3-1]
+	\arrow["{\eta_X}", from=1-1, to=1-3]
+\end{tikzcd}\]
+
+Define $LC = L_0C$ and $$Lh = f^\sharp : LX \to LX'.$$ It is easy to verify from the above diagram and the uniqueness of $f^\sharp$ that $L$ defined in this way is a functor. Thus, $\eta$ is natural. \\
+
+We now define the isomorphism $$\hom_\cat{C}(X, RY) \cong \hom_\cat{D}(LX, Y)$$ and show that it is natural in $X$ and $Y.$ For any $g : LX \to Y,$ define $\alpha^{-1}_Y(g) = \beta^{-1}_X(g) = Rg \circ \eta_X.$ Let $u : Y \to Y'$ and $v : X' \to X.$ Since $R$ is a functor, equation (3.1) yields $$\alpha_{Y'}^{-1}(u \circ g) = Ru \circ Rg \circ \eta_X = Ru \circ \alpha_Y^{-1}(g).$$ Similarly, since $\eta$ is natural we have $$\beta^{-1}_{X}(g \circ Lv) = Rg \circ RLv \circ \eta_X = Rg \circ \eta_{X'} \circ v = u \circ \beta_{X'}^{-1}(g).$$ Thus, the following diagrams commute:
+
+\[\begin{tikzcd}[column sep=scriptsize,row sep=2.25em]
+	{\hom_\textbf D (LX, Y)} && {\hom_\textbf C(X, RY)} && {\hom_\textbf D (LX, Y)} && {\hom_\textbf C(X, RY)} \\
+	\\
+	{\hom_\textbf D (LX', Y)} && {\hom_\textbf C(X', RY)} && {\hom_\textbf D (LX, Y')} && {\hom_\textbf C(X, RY')}
+	\arrow["{\beta^{-1}_X}"', from=3-1, to=3-3]
+	\arrow["{\beta^{-1}_{X'}}", from=1-1, to=1-3]
+	\arrow["{\textbf D(Lv, Y)}"', from=1-1, to=3-1]
+	\arrow["{\textbf C(v, RY)}", from=1-3, to=3-3]
+	\arrow["{\alpha^{-1}_{Y'}}"', from=3-5, to=3-7]
+	\arrow["{\textbf D(LX, u)}"', from=1-5, to=3-5]
+	\arrow["{\textbf D(LX, Ru)}", from=1-7, to=3-7]
+	\arrow["{\alpha^{-1}_{Y}}", from=1-5, to=1-7]
+\end{tikzcd}\]
+
+The proof is then completed by \Cref{lem:natural-isomorphism-alternate-definition} and the fact that $\alpha_Y(f) = \alpha_X(f) = f^\sharp,$ since defining $\alpha, \beta$ in this way satisfies $$\alpha_Y(\alpha^{-1}_Y(g)) = g \text{ and } \alpha^{-1}_Y(\alpha_Y(f)) = f$$ and similarly for $\beta.$
+
+\end{proof}
+
+\textbf{Remark:} The above proof shows that the naturality of $\beta$ and $\beta^{-1}$ is implied by the naturality of $\alpha$ and $\alpha^{-1}$. \href{https://hackmd.io/@alexhkurz/HyT3zuR8h#Literature-Review}{Dr. Kurz's Notes} provide more information on the acknowledgement of this fact in literature. 
+
+\begin{lemma}
+Adjoints are unique up to (natural) isomorphism. 
+\end{lemma}
+
+\begin{proof}
+Suppose the functor $R : \cat{D} \to \cat{C}$ has two left adjoints $L, L' : \cat{C} \to \cat{D}$ and let $X$ in $\cat C$. We will show that there exists a natural isomorphism $\phi : L \to L.$ Define natural transformations $\eta : X \to RLX, \eta' : X \to RL'X$ as in \Cref{thm:unit-of-adjunction}, and define $\phi_X = (\eta'_X)^\sharp$ for $Y = L'X$ so that $R\phi_X \circ \eta_X = \eta'_X.$ Since $R$ is a functor and $\eta, \eta'$ are natural, $$R(L'h \circ \phi_X) \circ \eta_X = RL'h \circ R\phi_X \circ \eta_X = RL'h \circ \eta'_{X} = \eta'_{X'} \circ h$$ Similarly, $$R(\phi_{X'} \circ Lh) \circ \eta_X = R\phi_{X'} \circ RLh \circ \eta_X = R\phi_{X'} \circ \eta_{X'} \circ h = \eta'_{X'} \circ h.$$ Choosing instead $Y = L'X',$ the naturality of $\phi$ follows from the uniqueness of $(\eta'_{X'} \circ h)^\sharp.$ Then $(\phi^{-1})_X = (\eta_X)^\sharp$ for $Y 
+= LX,$ from which the proof is completed by \Cref{lem:natural-isomorphism-alternate-definition}. To see this, apply a similar argument to the fact that $$R((\eta_X)^\sharp \circ (\eta'_X)^\sharp) \circ \eta_X = R(\eta_X)^\sharp \circ \eta'_X = \eta_X = R(\id_{L'X}) \circ \eta_X$$ and likewise for $(\eta'_X)^\sharp \circ (\eta_X)^\sharp.$
+\end{proof}
+
+\section{Topological Duality}
+
+The goal of this section is to now remove the assumption of finiteness on our Boolean algebras and to find the structure necessary to construct a duality theorem similar to \Cref{thm:fin-ba-set-duality-cat-theoretic} 
+
+\subsection{Free Algebras}
+
+This section discusses the notion of an "algebra" and its associated "free algebra." 
+
+\begin{definition}[Algebra]
+An \textbf{algebra} is a set $X$, whose elements are called \textbf{generators}, a collection of \textbf{operations}, and  \textbf{equations} which the operations satisfy. \\
+
+This collection of operations can be formalized by assigning a set of functions $f_n : A^n \to A$ (each called an \textbf{$n$-ary operation}) for each $n \in \mathbb{N}.$ The set of $n$-ary operations is denoted by $\Sigma(n).$ \\
+
+thFurthermore, the collection of operations can be formalized through 
+\end{definition}
+
 
 \end{document}
